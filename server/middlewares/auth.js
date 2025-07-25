@@ -21,6 +21,7 @@ export const auth = async (req, res, next)=>{
             req.free_usage =0;
         }
         req.plan = hasPremiumPlan ? 'premium' : 'free'
+         console.log('userId:', userId, 'plan:', req.plan, 'free_usage:', req.free_usage);
         next()
      } catch (error) {
         res.json({success: false, message: error.message})

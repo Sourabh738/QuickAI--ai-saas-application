@@ -6,14 +6,10 @@ import {v2 as cloudinary} from 'cloudinary'
 import fs from "fs";
 import pdf from 'pdf-parse/lib/pdf-parse.js'
 
-
 const AI = new OpenAI({
-    apiKey: process.env.GEMINI_API_KEY,
-    baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
+  apiKey: process.env.GEMINI_API_KEY,
+  baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
 });
-
-
-
 
 export const generateArticle = async (req, res) => {
   try {
@@ -121,15 +117,17 @@ export const generateBlogArticle = async (req, res) => {
   }
 };
 
-// using clipdrop API
+
+//using clipdrop API
 export const generateImage = async (req, res) => {
   try {
     const { userId } = req.auth();
     const { prompt, publish } = req.body;
     const plan = req.plan;
 
+     console.log('generateImage:', { userId, plan, prompt, publish });
     if (plan != "premium" ) {
-      return res.json({
+      return res.status.json({
         success: false,
         message: "This feature is only for Premium subscription.",
       });
@@ -226,7 +224,7 @@ export const removeImageObject = async (req, res) => {
     const {public_id} = await cloudinary.uploader.upload(image.path)
 
     const imageUrl = cloudinary.url(public_id, {
-      transformation : [{effect : `gen_remove : ${object}`}],
+      transformation : [{effect : `gen_remove:${object}`}],
       resource_type : 'image'
     })
 
